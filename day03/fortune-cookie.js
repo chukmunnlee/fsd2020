@@ -255,4 +255,7 @@ const fortune = [
   "May the warm winds of heaven blow softly upon your sprint."
 ]
 
-module.exports = fortune;
+module.exports = () => {
+  const idx = Math.floor(Math.random() * fortune.length)
+  return fortune[idx]
+}

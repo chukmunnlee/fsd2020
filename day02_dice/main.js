@@ -47,6 +47,7 @@ app.get('/roll',
 app.use(express.static(__dirname + '/dice_images'))
 app.use(express.static(__dirname + '/static'))
 
+// handle the error
 app.use(landingPage)
 
 // start express
