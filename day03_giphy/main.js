@@ -30,6 +30,7 @@ https://api.giphy.com/v1/gifs/search
     &limit=10
     &rating=g
     &lang=en
+    &offset=0
 */
 
 app.get('/search', 
@@ -47,12 +48,33 @@ app.get('/search',
         const result = await fetch(url)
         const giphys = await result.json()
 
-        console.info('giphys: \n', giphys)
+        //console.info('giphys: \n', giphys)
 
         //search Giphy, use await
+        /*
+        const imgs = []
+        for (let d of giphys.data) {
+            const title = d.title
+            const url = d.images.fixed_height.url
+            imgs.push({ title, url })
+        }
+        */
+
+        const imgs = giphys.data
+            .map( d => {
+                    return { title: d.title, url: d.images.fixed_height.url }
+                }
+            )
+
+        console.info(imgs)
 
         resp.status(200)
-        resp.end()
+        resp.type('text/html')
+        resp.render('giphy', {
+            search, imgs,
+            hasContent: imgs.length > 0
+            //hasContent: !!imgs.length
+        })
     }
 )
 

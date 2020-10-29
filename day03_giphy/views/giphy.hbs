@@ -1,0 +1,12 @@
+<h3>Your search of {{ search }}</h3>
+
+{{#if hasContent}}
+    {{#each imgs}}
+        <div>
+            <h5>{{ this.title }}</h5>
+            <img src="{{ this.url }}" alt="">
+        </div>
+    {{/each}}
+{{else}}
+    <h3>Your search returns no result</h3>
+{{/if}}
