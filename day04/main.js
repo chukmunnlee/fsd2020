@@ -15,11 +15,22 @@ app.set('view engine', 'hbs')
 // configure express to parse 
 // POST application/x-www-form-urlencoded, application/json
 // form data is in req.body
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+//app.use(express.urlencoded({ extended: true }))
+//app.use(express.json())
 
 // configure routes
 app.post('/register',
+    express.urlencoded({ extended: true}),
+    express.json(),
+    (req, resp, next) => {
+        const name = req.body.name.toLowerCase().trim()
+        if (name == 'fred')
+            return next()
+
+        resp.status(403)
+        resp.type('text/html')
+        resp.end('<h1>You shall not pass</h1>')
+    },
     (req, resp) => {
         console.info('body: ', req.body)
 
@@ -29,6 +40,14 @@ app.post('/register',
             name: req.body.name,
             available: req.body['available-date']
         })
+    }
+)
+
+app.get('/time', 
+    (req, resp) => {
+        resp.status(200)
+        resp.type('text/html')
+        resp.end(`<h1>The current time is <code>${new Date()}</code></h1>`)
     }
 )
 
