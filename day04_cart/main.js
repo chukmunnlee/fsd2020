@@ -2,6 +2,9 @@
 const express = require('express')
 const handlebars = require('express-handlebars')
 
+const { getCart, postCart } = require('./my_middleware')
+//const myMiddleware = require('./my_middleware')
+
 // port
 const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
 
@@ -13,30 +16,10 @@ app.engine('hbs', handlebars({ defaultLayout: 'default.hbs' }))
 app.set('view engine', 'hbs')
 
 // routes
-app.get('/', (req, resp) => {
-    const cart = []
-    resp.status(200)
-    resp.type('text/html')
-    resp.render('index', { cartState: JSON.stringify(cart)})
-})
-
+app.get('/', getCart)
 app.post('/', 
     express.urlencoded({ extended: true }),
-    (req, resp) => {
-        console.info('body: ', req.body)
-        const cart = JSON.parse(req.body.cartState)
-        cart.push({
-            item: req.body.item,
-            quantity: req.body.quantity,
-            unitPrice: req.body.unitPrice
-        })
-        resp.status(200)
-        resp.type('text/html')
-        resp.render('index', { 
-            cart: cart,
-            cartState: JSON.stringify(cart)
-        })
-    }
+    postCart
 )
 
 app.use(express.static(__dirname + '/static'))
