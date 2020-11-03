@@ -5,7 +5,8 @@ const handlebars = require('express-handlebars')
 const mysql = require('mysql2/promise')
 
 // SQL 
-const SQL_FIND_BY_NAME = 'select * from apps where name like ? limit ?'
+const SQL_FIND_BY_NAME = 'select * from apps where name like ? limit ? offset ?'
+const SQL_COUNT_Q = 'select count(*) as q_count where name like ?'
 const SQL_FIND_BY_APP_ID = 'select * from apps where appid = ?'
 
 // configure PORT
@@ -61,15 +62,21 @@ app.get('/', (req, resp) => {
 app.get('/search', 
     async (req, resp) => {
         const q = req.query['q'];
+        const offset = parseInt(req.query['offset']) || 0
+        const limit = 10
 
         // acquire a connection from the pool
         let conn, recs;
 
         try {
             conn = await pool.getConnection()
+			  // count the number of results
+			  let result = await conn.query(SQL_COUNT_Q, [ `%${q}%` ])
+			  const queryCount = result[0][0].q_count
+
             // perform the query
             //  select * from apps where name like ? limit ?
-            const result = await conn.query(SQL_FIND_BY_NAME, [ `%${q}%`, 10 ])
+            result = await conn.query(SQL_FIND_BY_NAME, [ `%${q}%`, limit, offset ])
             recs = result[0];
 
         } catch(e) {
@@ -85,7 +92,13 @@ app.get('/search',
         resp.status(200)
         resp.type('text/html')
         resp.render('results', 
-            { result: recs, hasResult: recs.length > 0 }
+            { 
+                result: recs, 
+                hasResult: recs.length > 0,
+                q: q,
+                prevOffset: Math.max(0, offset - limit),
+                nextOffset: offset + limit
+            }
         )
     }
 )

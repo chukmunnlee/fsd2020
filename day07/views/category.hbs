@@ -1,0 +1,13 @@
+<form method="GET" action="/search">
+    <div>
+        <label for="app_cat">Application Categories</label>
+    </div>
+
+    <select name="appCat" id="app_cat">
+        {{#each category}}
+            <option value="{{ this }}">{{ this }}</option>
+        {{/each}}
+    </select>
+
+    <button type="submit">Get App</button>
+</form>

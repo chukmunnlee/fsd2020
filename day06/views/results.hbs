@@ -18,6 +18,26 @@
                     <td>{{ this.installs }}</td>
                 </tr>
             {{/each}}
+
+            <!-- navigation buttons -->
+            <tr>
+                <td>
+                    <form method="GET" action="/search">
+                        <input type="hidden" name="q" value="{{ q }}">
+                        <input type="hidden" name="offset" value={{ prevOffset }}>
+                        <button type="submit">Previous</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="GET" action="/search">
+                        <input type="hidden" name="q" value="{{ q }}">
+                        <input type="hidden" name="offset" value={{ nextOffset }}>
+                        <button type="submit">Next</button>
+                    </form>
+
+                </td>
+            </tr>
+
         </tbody>
     </table>
 
