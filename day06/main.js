@@ -63,23 +63,30 @@ app.get('/search',
         const q = req.query['q'];
 
         // acquire a connection from the pool
-        const conn = await pool.getConnection()
+        let conn, recs;
 
         try {
+            conn = await pool.getConnection()
             // perform the query
             //  select * from apps where name like ? limit ?
-            const [ recs, _ ] = await conn.query(SQL_FIND_BY_NAME, [ `%${q}%`, 10 ])
+            const result = await conn.query(SQL_FIND_BY_NAME, [ `%${q}%`, 10 ])
+            recs = result[0];
 
-            resp.status(200)
-            resp.type('text/html')
-            resp.render('results', 
-                { result: recs, hasResult: recs.length > 0 }
-            )
         } catch(e) {
+			  resp.status(500)
+			  resp.type('text/html')
+			  resp.send('<h2>Error</h2>' + e)
         } finally {
             // release connection
-            conn.release()
+            if (conn)
+                conn.release()
         }
+
+        resp.status(200)
+        resp.type('text/html')
+        resp.render('results', 
+            { result: recs, hasResult: recs.length > 0 }
+        )
     }
 )
 
