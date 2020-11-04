@@ -10,24 +10,6 @@ const LIMIT = 30
 const SQL_TV_LIST = 'select tvid, name from tv_shows order by name asc limit ?'
 const SQL_TV_SHOW = 'select * from tv_shows where tvid = ?'
 
-const mkQuery = (sqlStmt, pool) => {
-	const f = async (params) => {
-		// get a connection from the pool
-		const conn = await pool.getConnection()
-
-		try {
-			// Execute the query with the parameter
-			const results = await pool.query(sqlStmt, params)
-			return results[0]
-		} catch(e) {
-			return Promise.reject(e)
-		} finally {
-			conn.release()
-		}
-	}
-	return f
-}
-
 const startApp = async (app, pool) => {
 	const conn = await pool.getConnection()
 	try {
@@ -56,10 +38,6 @@ const pool = mysql.createPool({
 	connectionLimit: 4
 })
 
-// create queries
-const getTVList = mkQuery(SQL_TV_LIST, pool)
-const getTVShowById = mkQuery(SQL_TV_SHOW, pool)
-
 // create an instance of the application
 const app = express()
 
@@ -70,9 +48,10 @@ app.set('view engine', 'hbs')
 // configure application
 app.get('/', async (req, resp) => {
 
+	const conn = await pool.getConnection()
+
 	try {
-		//const [ result, _ ] = await conn.query(SQL_TV_LIST, [ LIMIT ])
-		const result = await getTVList([ LIMIT ])
+		const [ result, _ ] = await conn.query(SQL_TV_LIST, [ LIMIT ])
 		resp.status(200)
 		resp.type('text/html')
 		resp.render('index', { shows: result })
@@ -80,6 +59,8 @@ app.get('/', async (req, resp) => {
 		console.error('ERROR: ', e)
 		resp.status(500)
 		resp.end()
+	} finally {
+		conn.release()
 	}
 })
 
@@ -87,9 +68,10 @@ app.get('/show/:tvid', async (req, resp) => {
 
 	const tvid = req.params.tvid
 
+	const conn = await pool.getConnection()
+
 	try {
-		// const [ result, _ ] = await conn.query(SQL_TV_SHOW, [ tvid ])
-		const result = await getTVShowById([ tvid ])
+		const [ result, _ ] = await conn.query(SQL_TV_SHOW, [ tvid ])
 		resp.status(200)
 		resp.type('text/html')
 		resp.render('show', { show: result[0], hasSite: !!result[0].official_site })
@@ -97,6 +79,8 @@ app.get('/show/:tvid', async (req, resp) => {
 		console.error('ERROR: ', e)
 		resp.status(500)
 		resp.end()
+	} finally {
+		conn.release()
 	}
 })
 

@@ -1,9 +1,11 @@
 <h2>List of Apps</h2>
 
+<h3>Root resource {{ root }}</h3>
+
 <ul>
     {{#each apps}}
         <li>
-            <a href="app/{{ this.app_id }}">{{ this.name }}</a>
+            <a href="{{root}}app/{{ this.app_id }}">{{ this.name }}</a>
         </li>
     {{/each}}
 

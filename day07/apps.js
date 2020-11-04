@@ -6,21 +6,25 @@ const SQL_GET_APP_CATEGORIES = 'select distinct(category) from apps';
 const SQL_GET_APPS = 'select app_id, name from apps limit ? offset ?';
 const SQL_GET_APP_BY_APPID = 'select * from apps where app_id = ?'
 
-module.exports = function(p) {
+module.exports = function(p, r) {
 
     const router = express.Router()
     const pool = p
+    const root = r || '/'
 
     router.get('/', async (req, resp) => {
 
         const conn = await pool.getConnection()
+        const baseUrl = req.baseUrl
+
+        console.info(`baseUrl: ${baseUrl}`)
 
         try {
             const results = await conn.query(SQL_GET_APPS, [ 20, 0 ])
 
             resp.status(200)
             resp.type('text/html')
-            resp.render('index', { apps: results[0] })
+            resp.render('index', { apps: results[0], root })
 
         } catch(e) {
             resp.status(500)
@@ -53,7 +57,7 @@ module.exports = function(p) {
             resp.format({
                 'text/html': () => {
                     resp.type('text/html')
-                    resp.render('app', { app: recs[0] })
+                    resp.render('app', { app: recs[0], root })
                 },
                 'application/json': () => {
                     resp.type('application/json')
