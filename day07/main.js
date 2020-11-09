@@ -19,7 +19,7 @@ const pool = mysql.createPool({
     timezone: '+08:00'
 })
 
-const router = require('./apps')(pool)
+const router = require('./apps')(pool, '/v1')
 
 // create express
 const app = express()
