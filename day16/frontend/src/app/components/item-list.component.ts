@@ -19,7 +19,6 @@ export class ItemListComponent implements OnInit {
   ngOnInit(): void { }
 
   itemClicked(id: string) {
-    console.info('>>> item id: ', id)
     this.onItemSelect.next(id)
   }
 

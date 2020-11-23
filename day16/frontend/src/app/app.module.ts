@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { AppComponent } from './app.component';
 import { ItemListComponent } from './components/item-list.component';
 import { ItemDetailComponent } from './components/item-detail.component';
+import { CartService } from './cart.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { ItemDetailComponent } from './components/item-detail.component';
     BrowserModule, HttpClientModule,
     FormsModule, ReactiveFormsModule
   ],
-  providers: [],
+  providers: [ CartService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
