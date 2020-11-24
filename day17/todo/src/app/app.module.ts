@@ -7,6 +7,7 @@ import { MainComponent } from './components/main.component';
 import { CreateComponent } from './components/create.component';
 import { TodoComponent } from './components/todo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TodoDatabase } from './todo.database';
 
 const ROUTES: Routes = [
   { path: '', component: MainComponent },
@@ -24,7 +25,7 @@ const ROUTES: Routes = [
     RouterModule.forRoot(ROUTES),
     FormsModule, ReactiveFormsModule
   ],
-  providers: [],
+  providers: [ TodoDatabase ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

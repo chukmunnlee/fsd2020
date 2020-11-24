@@ -14,7 +14,13 @@ export class TodoComponent implements OnInit {
   titleCtrl: FormControl;
 
   get todo(): Todo {
-    return this.todoForm.value as Todo
+    const t: Todo = this.todoForm.value as Todo
+    t.tasks = t.tasks.map(v => {
+      // @ts-ignore
+      v.priority = parseInt(v.priority)
+      return v
+    })
+    return t
   }
   set todo(t: Todo) {
     // leave it
