@@ -1,0 +1,12 @@
+<h1>My Pet Store</h1>
+
+<div>
+  <a [routerLink]="['/cat']">Cat</a>
+  <button type="button" [routerLink]="['/', 'dog']">Dog</button>
+</div>
+
+<hr>
+
+<div style="border: 1px solid red;">
+  <router-outlet></router-outlet>
+</div>
