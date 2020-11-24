@@ -4,10 +4,13 @@
   <div>
     <input type="text" placeholder="Please enter title" size="40" formControlName="title">
     <button type="button" (click)="addTask()">Add Task</button>
-    <button type="button" (click)="showValues()">Show</button>
   </div>
 
-  <table>
+  <h3 *ngIf="tasksArray.controls.length <= 0">
+    You have no task
+  </h3>
+
+  <table *ngIf="tasksArray.controls.length > 0">
     <thead>
       <tr>
         <th>Description</th>
@@ -16,7 +19,7 @@
       </tr>
     </thead>
     <tbody formArrayName="tasks">
-      <tr *ngFor="let t of tasksArray.controls" [formGroup]="t">
+      <tr *ngFor="let t of tasksArray.controls; let i = index;" [formGroup]="t">
         <td>
           <input type="text" placeholder="Sub task description" size="50" formControlName="description">
         </td>
@@ -28,7 +31,7 @@
           </select>
         </td>
         <td>
-          <button type="button">X</button>
+          <button type="button" (click)="deleteTask(i)">X</button>
         </td>
       </tr>
     </tbody>

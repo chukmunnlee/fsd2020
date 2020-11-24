@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Todo } from '../models';
 
 @Component({
   selector: 'app-todo',
@@ -12,6 +13,13 @@ export class TodoComponent implements OnInit {
   tasksArray: FormArray;
   titleCtrl: FormControl;
 
+  get todo(): Todo {
+    return this.todoForm.value as Todo
+  }
+  set todo(t: Todo) {
+    // leave it
+  }
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -23,6 +31,10 @@ export class TodoComponent implements OnInit {
   addTask() {
     const task = this.createTask()
     this.tasksArray.push(task)
+  }
+
+  deleteTask(idx: number) {
+    this.tasksArray.removeAt(idx)
   }
 
   showValues() {
