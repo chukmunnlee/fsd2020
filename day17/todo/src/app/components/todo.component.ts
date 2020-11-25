@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Todo } from '../models';
 
@@ -13,6 +13,7 @@ export class TodoComponent implements OnInit {
   tasksArray: FormArray;
   titleCtrl: FormControl;
 
+  @Input()
   get todo(): Todo {
     const t: Todo = this.todoForm.value as Todo
     t.tasks = t.tasks.map(v => {

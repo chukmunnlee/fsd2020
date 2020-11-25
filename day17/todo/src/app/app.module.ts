@@ -8,17 +8,19 @@ import { CreateComponent } from './components/create.component';
 import { TodoComponent } from './components/todo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TodoDatabase } from './todo.database';
+import { TodoDetailComponent } from './components/todo-detail.component';
 
 const ROUTES: Routes = [
   { path: '', component: MainComponent },
   { path: 'create', component: CreateComponent },
+  { path: 'todo/:todoId', component: TodoDetailComponent  },
   { path: '**', redirectTo: '/', pathMatch: 'full' }
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainComponent, CreateComponent, TodoComponent
+    MainComponent, CreateComponent, TodoComponent, TodoDetailComponent
   ],
   imports: [
     BrowserModule,
