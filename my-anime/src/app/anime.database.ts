@@ -19,7 +19,7 @@ export class AnimeDatabase extends Dexie {
 
     this.searchOption = this.table('searchOption')
   }
-
+// hehe
   async saveSearchOption(s: SearchOption): Promise<any> {
     const gen = s.genre == Genre.Anime? 0: 1
     s.q = normaizeSearchText(s.q)
