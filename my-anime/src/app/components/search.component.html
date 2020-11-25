@@ -15,17 +15,19 @@
     <button type="button" class="btn btn-primary" (click)="setGenre('anime')">
       Anime
     </button>
-    <button type="button" class="btn btn-danger" (click)="setGenre('manga')">
+    <button type="button" class="btn btn-success" (click)="setGenre('manga')">
       Manga
     </button>
   </div>
 
   <div class="row mt-2">
     <div class="col d-flex justify-content-end align-items-center">
-      <button type="button" class='btn btn-light' [disabled]="form.invalid">
+      <button type="button" class='btn btn-light' [disabled]="form.invalid"
+          (click)="saveOptions()">
         Save
       </button>
-      <button type="button" class='ml-1 btn btn-dark' [disabled]="form.invalid">
+      <button type="button" class='ml-2 btn btn-dark' [disabled]="form.invalid"
+          (click)="gotoResult()">
         Search
       </button>
     </div>

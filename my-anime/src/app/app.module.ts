@@ -17,11 +17,13 @@ import { SearchComponent } from './components/search.component';
 import { SearchListComponent } from './components/search-list.component';
 import { ResultsComponent } from './components/results.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AnimeDatabase } from './anime.database';
 
 const ROUTES: Routes = [
   { path: '', component: MainComponent },
   { path: 'search-list', component: SearchListComponent },
   { path: 'search', component: SearchComponent },
+  { path: 'search/:genre/:q', component: ResultsComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full' }
 ]
 
@@ -36,7 +38,7 @@ const ROUTES: Routes = [
     RouterModule.forRoot(ROUTES),
     LottieModule.forRoot({ player: playerFactory })
   ],
-  providers: [],
+  providers: [ AnimeDatabase ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
