@@ -16,10 +16,12 @@ import { MainComponent } from './components/main.component';
 import { SearchComponent } from './components/search.component';
 import { SearchListComponent } from './components/search-list.component';
 import { ResultsComponent } from './components/results.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const ROUTES: Routes = [
   { path: '', component: MainComponent },
   { path: 'search-list', component: SearchListComponent },
+  { path: 'search', component: SearchComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full' }
 ]
 
@@ -30,6 +32,7 @@ const ROUTES: Routes = [
   ],
   imports: [
     BrowserModule,
+    FormsModule, ReactiveFormsModule,
     RouterModule.forRoot(ROUTES),
     LottieModule.forRoot({ player: playerFactory })
   ],

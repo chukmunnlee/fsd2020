@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-search',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchComponent implements OnInit {
 
-  constructor() { }
+  genre = 'anime'
+
+  form: FormGroup
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.form = this.fb.group({
+      q: this.fb.control('', [ Validators.required ])
+    })
+  }
+
+  setGenre(g: string) {
+    this.genre = g;
+    console.info(`genre: `, this.genre)
   }
 
 }
