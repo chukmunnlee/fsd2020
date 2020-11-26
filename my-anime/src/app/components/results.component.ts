@@ -21,7 +21,8 @@ export class ResultsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.canShare = this.webShare.canShare()
+    // @ts-check
+    this.canShare = !!navigator['share']
 
     this.genre = this.activatedRoute.snapshot.params['genre']
     this.q = this.activatedRoute.snapshot.params['q']
@@ -45,8 +46,10 @@ export class ResultsComponent implements OnInit {
   }
 
   shareThis(idx: number) {
+    console.info('>>> idx = ', idx)
     const r = this.searchResults[idx]
-    this.webShare.share({
+    console.info('>>> r = ', r)
+    navigator.share({
       title: r.title,
       text: r.synopsis,
       url: r.image
