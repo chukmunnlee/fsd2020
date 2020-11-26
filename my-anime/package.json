@@ -21,6 +21,7 @@
     "@angular/router": "~11.0.1",
     "dexie": "^3.0.3",
     "lottie-web": "^5.7.4",
+    "ng-navigator-share": "^1.0.4",
     "ngx-lottie": "^6.4.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

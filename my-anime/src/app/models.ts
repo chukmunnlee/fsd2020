@@ -6,3 +6,9 @@ export interface SearchOption {
   q: string;
   genre: Genre
 }
+
+export interface SearchResult {
+  image: string
+  title: string
+  synopsis: string
+}

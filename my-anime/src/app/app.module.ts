@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router'
+import { HttpClientModule } from '@angular/common/http'
 
 // start lottie animation
 import { LottieModule } from 'ngx-lottie'
@@ -35,7 +36,7 @@ const ROUTES: Routes = [
   imports: [
     BrowserModule,
     FormsModule, ReactiveFormsModule,
-    RouterModule.forRoot(ROUTES),
+    RouterModule.forRoot(ROUTES), HttpClientModule,
     LottieModule.forRoot({ player: playerFactory })
   ],
   providers: [ AnimeDatabase ],
