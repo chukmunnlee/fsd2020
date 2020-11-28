@@ -1,0 +1,13 @@
+<h1>My Cart</h1>
+
+<table>
+  <tr>
+    <td style="width: 30vw;">
+      <app-item-list [content]="cartContent" (onItemSelect)="itemSelected($event)">
+      </app-item-list>
+    </td>
+    <td>
+      <app-item-detail [cartItem]="cartItem" (onUpdate)="updateCart($event)"></app-item-detail>
+    </td>
+  </tr>
+</table>

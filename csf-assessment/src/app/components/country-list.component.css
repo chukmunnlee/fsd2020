@@ -1,0 +1,9 @@
+.flag {
+	height: 3vh;
+	border: 1px grey solid;
+}
+
+.country-name {
+	font-weight: bold;
+	font-size: 1.2em;
+}

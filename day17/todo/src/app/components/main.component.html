@@ -1,0 +1,13 @@
+<div>
+<button type="button" [routerLink]="['/create']">
+  CREATE
+</button>
+</div>
+
+<hr>
+
+<div *ngFor="let t of todos">
+  <h4 [routerLink]="['/todo', t.id ]">
+    {{ t.title }}
+  </h4>
+</div>

@@ -1,0 +1,41 @@
+<form [formGroup]="todoForm">
+
+  <div>Title</div>
+  <div>
+    <input type="text" placeholder="Please enter title" size="40" formControlName="title">
+    <button type="button" (click)="addTask()">Add Task</button>
+  </div>
+
+  <h3 *ngIf="tasksArray.controls.length <= 0">
+    You have no task
+  </h3>
+
+  <table *ngIf="tasksArray.controls.length > 0">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Priority</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody formArrayName="tasks">
+      <tr *ngFor="let t of tasksArray.controls; let i = index;" [formGroup]="t">
+        <td>
+          <input type="text" placeholder="Sub task description" size="50" formControlName="description">
+        </td>
+        <td>
+          <select formControlName="priority">
+            <option value="0">Low</option>
+            <option value="1">Medium</option>
+            <option value="2">High</option>
+          </select>
+        </td>
+        <td>
+          <button type="button" (click)="deleteTask(i)">X</button>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</form>

@@ -1,0 +1,29 @@
+<div class="row mb-2">
+	<div class="col d-flex justify-content-between align-items-center">
+		<h2><code>Settings</code></h2>
+		<button class="btn btn-warning btn-sm" type="button" (click)="navigateToCountryList()">
+			Back
+		</button>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col">
+		<form [formGroup]="form">
+			<div class="form-group">
+				<label for="key">NewsAPI.org Key</label>
+				<input class="form-control" type="text" placeholder="Enter your newsapi.org key here" formControlName="secret">
+			</div>
+			<div class="d-flex justify-content-between">
+				<button class="btn btn-danger" type="button" 
+						(click)="deleteKey()" [disabled]="form.invalid">
+					Delete
+				</button>
+				<button class="btn btn-primary" type="button" 
+							(click)="addKey()" [disabled]="form.invalid">
+					Add
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

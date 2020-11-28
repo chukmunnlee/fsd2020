@@ -1,0 +1,36 @@
+<form [formGroup]="form">
+  <table>
+    <tr>
+      <td colspan="2">
+        <h2>Item </h2>
+      </td>
+    </tr>
+    <tr>
+      <td>Id</td>
+      <td>
+        <input type="text" size="20" placeholder="Id" formControlName="id">
+      </td>
+    </tr>
+    <tr>
+      <td>Item</td>
+      <td>
+        <input type="text" size="20" placeholder="Item name" formControlName="item">
+      </td>
+    </tr>
+    <tr>
+      <td>Quanity</td>
+      <td>
+        <input type="number" size="20" placeholder="Quantity" formControlName="quantity">
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <button type="button">Clear</button>
+        <button type="button" (click)="updateItem()">Update</button>
+        <button type="button">Delete</button>
+        <button type="button">Add</button>
+      </td>
+    </tr>
+  </table>
+</form>
