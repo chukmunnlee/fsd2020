@@ -1,0 +1,29 @@
+<div class="row mb-2">
+	<div class="col d-flex justify-content-between align-items-center">
+		<h2><code>Top Headlines</code></h2>
+		<button class="btn btn-warning btn-sm" type="button" (click)="navigateToCountryList()">
+			Back
+		</button>
+	</div>
+</div>
+
+<div class="card mb-4" *ngFor="let a of articles">
+	<img [src]="a.urlToImage" class="card-img-top">
+	<div class="card-body">
+		<div class="card-title">
+			{{ a.title }}
+		</div>
+		<div class="card-text">
+			<p><em>{{ a.description }}</em></p>
+			<hr>
+			<p>{{ a.content }}</p>
+			<div class="d-flex justify-content-end">
+				<span>
+					<a [href]="a.url" target="_blank" class="btn btn-primary btn-sm stretched-link">
+						Read
+					</a>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
