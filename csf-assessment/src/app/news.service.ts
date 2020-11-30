@@ -50,6 +50,8 @@ export class NewsService {
 			// Delete all not saved articles
 			if ((Date.now() - a.timestamp) >= ARTICLE_EXPIRY_DURATION) {
 				await this.appDB.deleteArticles(articles.filter(a => !a.saved))
+				// Retain only the saved articles
+				articles = articles.filter(a => a.saved)
 				// we have just deleted a bunch of old articles, set shouldRefresh to true
 				shouldRefresh = true
 			}
@@ -64,6 +66,8 @@ export class NewsService {
 			const headers = (new HttpHeaders()).set('X-Api-Key', secret)
 
 			const result = await this.http.get(NEWS_URL, { params, headers }).toPromise()
+
+			// primary keys of all the saved articles
 			const saveSet = new Set()
 			articles.forEach(a => {
 				saveSet.add(a.publishedAt)
