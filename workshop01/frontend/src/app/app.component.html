@@ -1,0 +1,15 @@
+<h1>Fortune Cookie</h1>
+<form [formGroup]="form" (ngSubmit)="getCookie()">
+  <label for="numCookies">Number of Cookies:</label>
+
+  <select id="numCookies" formControlName="cookieCount"
+      style="margin-right: 2vw; margin-left: 1vw;">
+    <option value="1" checked>1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+
+  <button type="submit">Get Cookies</button>
+</form>
