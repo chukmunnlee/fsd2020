@@ -1,4 +1,5 @@
 // load libaries
+const cors = require('cors')
 const fortuneCookie = require('fortune-cookie')
 const morgan = require('morgan')
 const express = require('express')
@@ -20,7 +21,7 @@ app.use(morgan('combined'))
 // resources
 // GET /api/cookie -> application/json { cookie: 'cookie text' }
 // GET /api/cookie?count=4 -> application/json [ { cookie: 'cookie text' }, ... ]
-app.get('/api/cookie', (req, resp) => {
+app.get('/api/cookie', cors(), (req, resp) => {
     const count = parseInt(req.query['count']) || 1
 
     resp.status(200)
@@ -35,6 +36,9 @@ app.get('/api/cookie', (req, resp) => {
         resp.json(c)
     }
 })
+
+// serve frontend 
+app.use(express.static(__dirname + '/frontend'))
 
 // start the server
 app.listen(PORT, () => {
