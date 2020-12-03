@@ -1,19 +1,14 @@
 {
-  "name": "backend",
+  "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "cookie.js",
   "scripts": {
-    "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "engines": {
-    "node": "15.x"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.17.1",
     "fortune-cookie": "^0.0.1",
     "morgan": "^1.10.0"
