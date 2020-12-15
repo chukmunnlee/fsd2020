@@ -68,6 +68,8 @@ app.get('/country/:country', async (req, resp) => {
     }
 })
 
+app.use(express.static('/opt/tmp/frontend'))
+
 mongoClient.connect()
     .then(() => {
         app.listen(PORT, () => {
