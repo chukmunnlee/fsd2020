@@ -2,6 +2,7 @@
 const morgan = require('morgan')
 const { MongoClient } = require('mongodb')
 const mysql = require('mysql2/promise')
+const { mkQuery, gameReviews } = require('./db_utils')
 const express = require('express')
 
 // configure the databases
@@ -14,7 +15,11 @@ const pool = mysql.createPool({
     timezone: '+08:00'
 })
 
+const findGameById = mkQuery('select * from game where gid = ?', pool)
+
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017'
+const MONGO_DB = 'bgg'
+const MONGO_COLLECTION = 'reviews'
 const client = new MongoClient(MONGO_URL, {
     useNewUrlParser: true, useUnifiedTopology: true
 })
@@ -25,6 +30,39 @@ const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
 const app = express()
 
 app.use(morgan('combined'))
+
+app.get('/game/:gid', async (req, resp) => {
+    const gid = parseInt(req.params['gid'])
+
+    resp.type('application/json')
+
+    try {
+        const p0 = findGameById([ gid ])
+        const p1 = gameReviews(gid, client.db(MONGO_DB).collection(MONGO_COLLECTION))
+
+        const [ game, reviews ] = await Promise.all([ p0, p1 ])
+        if (game.length <= 0) {
+            resp.status(404)
+            resp.json({ message: `Cannot find game ${gid}`})
+            return
+        }
+
+        resp.status(200)
+        resp.json({
+            gid: game[0].gid,
+            name: game[0].name,
+            year: game[0].year,
+            url: game[0].url,
+            image: game[0].image,
+            ...reviews[0]
+        })
+
+    } catch(e) {
+        console.error('ERROR: ', e)
+        resp.status(500)
+        resp.json({ error: e })
+    }
+})
 
 // start the server, 
 // check the databases are up before starting the server
