@@ -90,7 +90,7 @@ app.post('/temperature', upload.single('temp-img'), (req, resp) => {
 		.then(buff => 
 			putObject(req.file, buff, s3)
 		)
-		.then(result => 
+		.then(() => 
 			mongoClient.db(DATABASE).collection(COLLECTION)
 				.insertOne(doc)
 		)
