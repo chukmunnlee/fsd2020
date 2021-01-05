@@ -2,6 +2,7 @@ const morgan = require('morgan')
 const express = require('express')
 const mysql = require('mysql2/promise')
 const jwt = require('jsonwebtoken')
+const cors = require('cors')
 
 const pool = mysql.createPool({
     host: 'localhost',
@@ -25,7 +26,7 @@ const mkAuth = (passport) => {
     return (req, resp, next) => {
         passport.authenticate('local',
             (err, user, info) => {
-                if (null != err) {
+                if ((null != err) || (!user)) {
                     resp.status(401)
                     resp.type('application/json')
                     resp.json({ error: err })
@@ -49,6 +50,7 @@ passport.use(
             const conn = await pool.getConnection()
             try {
                 const [ result, _ ] = await conn.query(SQL_SELECT_USER, [ user, password ])
+                console.info('>>> result: ', result)
                 if (result.length > 0)
                     done(null, {
                         username: result[0].user_id,
@@ -73,6 +75,7 @@ const PORT = parseInt(process.env.PORT) || 3000
 const app = express()
 app.use(morgan('combined'))
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
