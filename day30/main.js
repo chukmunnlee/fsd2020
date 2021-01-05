@@ -1,6 +1,7 @@
 const morgan = require('morgan')
 const express = require('express')
 const mysql = require('mysql2/promise')
+const jwt = require('jsonwebtoken')
 
 const pool = mysql.createPool({
     host: 'localhost',
@@ -11,6 +12,7 @@ const pool = mysql.createPool({
     connectionLimit: 4,
     timezone: '+08:00'
 })
+const TOKEN_SECRET = process.env.TOKEN_SECRET || 'abcd1234'
 
 const SQL_SELECT_USER = 'select user_id, email from user where user_id = ? and password = sha1(?)'
 
@@ -29,6 +31,8 @@ const mkAuth = (passport) => {
                     resp.json({ error: err })
                     return
                 }
+                // attach user to the request object
+                req.user = user
                 next()
             }
         )(req, resp, next)
@@ -84,10 +88,62 @@ app.post('/login',
         // do something 
         console.info(`user: `, req.user)
         // generate JWT token
+        const timestamp = (new Date()).getTime() / 1000
+        const token = jwt.sign({
+            sub: req.user.username,
+            iss: 'myapp',
+            iat: timestamp,
+            //nbf: timestamp + 30,
+            exp: timestamp + (60 * 60),
+            data: {
+                avatar: req.user.avatar,
+                loginTime: req.user.loginTime
+            }
+        }, TOKEN_SECRET)
 
         resp.status(200)
         resp.type('application/json')
-        resp.json({ message: `Login in at ${new Date()}`})
+        resp.json({ message: `Login in at ${new Date()}`, token })
+    }
+)
+
+// Look for token in HTTP header
+// Authorization: Bearer <token>
+app.get('/protected/secret',
+    (req, resp, next) => {
+        // check if the request has Authorization header
+        const auth = req.get('Authorization')
+        if (null == auth) {
+            resp.status(403)
+            resp.json({ message: 'Missing Authorization header' })
+            return
+        }
+        // Bearer authorization
+        // Bearer <token>
+        const terms = auth.split(' ')
+        if ((terms.length != 2) || (terms[0] != 'Bearer')) {
+            resp.status(403)
+            resp.json({ message: 'Incorrect Authorization' })
+            return
+        }
+
+        const token = terms[1]
+        try {
+            // verify token
+            const verified = jwt.verify(token, TOKEN_SECRET)
+            console.info(`Verified token: `, verified)
+            req.token = verified
+            next()
+        } catch(e) {
+            resp.status(403)
+            resp.json({ message: 'Incorrect token', error: e })
+            return
+        }
+
+    },
+    (req, resp) => {
+        resp.status(200),
+        resp.json({ meaning_of_life: 42 })
     }
 )
 
