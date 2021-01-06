@@ -1,0 +1,22 @@
+<h1>Top Secret</h1>
+<hr>
+
+<figure>
+	<img src="assets/top-secret.jpg" width="200">
+	<figcaption>Top Secret! (1984)</figcaption>
+</figure>
+
+<form [formGroup]="form" (ngSubmit)="postComment()">
+  Pristine: {{ form.pristine}}, Dirty: {{ form.dirty }}
+  <div>
+    <label for="comments">Comments</label>
+  </div>
+  <div>
+    <textarea id="comments" cols="30" rows="4" formControlName="comments"></textarea>
+  </div>
+
+  <button type="submit">Post Comment</button>
+  <button type="button" [routerLink]="[ '/' ]">Back</button>
+
+</form>
+
