@@ -34,7 +34,6 @@ const fetchNews = (country, ctx) => {
                 })
             )
         )
-
 }
 
 // create a menu
