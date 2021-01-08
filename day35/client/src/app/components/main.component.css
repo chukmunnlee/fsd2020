@@ -1,0 +1,9 @@
+.character {
+	border: blue 2px solid;
+	margin: 5px;
+	padding: 5px;
+}
+
+.character:hover {
+	background: lightblue;
+}

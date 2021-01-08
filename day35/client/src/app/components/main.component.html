@@ -1,0 +1,5 @@
+<h2>Please Select Your Character</h2>
+
+ <div *ngFor="let c of characters" class="character" (click)="selectCharacter(c.id)">
+	<h4>{{ c.name }}</h4>
+</div>
