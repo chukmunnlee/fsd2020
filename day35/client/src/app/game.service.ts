@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import { HttpClient } from '@angular/common/http'
 import {Game} from 'phaser'
 import {MainScene} from './scenes/main.scene';
-import { BaseMessage, GetAllPlayerLocationsMessage, GetPlayerLocationMessage, MSG_TYPE_GET_ALL_PLAYER_LOCATIONS, MSG_TYPE_GET_PLAYER_LOCATION } from "./messages";
+import { BaseMessage, GetAllPlayerLocationsMessage, GetPlayerLocationMessage, MSG_TYPE_GET_ALL_PLAYER_LOCATIONS, MSG_TYPE_GET_PLAYER_LOCATION, MSG_TYPE_REQUEST_MOVEMENT, RequestMovementMessage } from "./messages";
 import { Subject } from "rxjs";
 
 @Injectable()
@@ -39,6 +39,15 @@ export class GameService {
     this.socket.onclose = () => {
       // handle close
     }
+  }
+
+  movePlayer(dir: string) {
+      const msg: RequestMovementMessage = {
+        type: MSG_TYPE_REQUEST_MOVEMENT,
+        player: this.player,
+        direction: dir
+      }
+    this.socket.send(JSON.stringify(msg))
   }
 
   getAllPlayerLocations() {

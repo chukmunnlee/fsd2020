@@ -38,6 +38,48 @@ const processMessage = (payload) => {
 			player.ws.send(JSON.stringify(resp))
 			break;
 
+		case 'request-movement':		
+			var player = players.find(p => p.charId == msg.player)
+			const origX = player.x
+			const origY = player.y
+			let finalX = origX
+			let finalY = origY
+			switch (msg.direction.toLowerCase()) {
+				case 'arrowup':
+					finalY = (finalY - 1) < 0? 9: (finalY - 1)
+					break;
+
+				case 'arrowdown':
+					finalY = (finalY + 1) % 10
+					break;
+
+				case 'arrowleft':
+					finalX = (finalX - 1) < 0? 9: (finalX - 1)
+					break;
+
+				case 'arrowright':
+					finalX = (finalX + 1) % 10
+					break;
+				
+				default:
+					return
+			}
+
+			// update the player's new location
+			player.x = finalX
+			player.y = finalY
+
+			resp = JSON.stringify({
+				type: 'player-moved',
+				player: player.charId,
+				from: { x: origX, y: origY },
+				to: { x: finalX, y: finalY }
+			})
+			for (let i in players)
+				players[i].ws.send(resp)
+
+			break;
+
 		default:
 			// ignore message type that we don't understand
 	}
